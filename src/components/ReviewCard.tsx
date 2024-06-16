@@ -25,7 +25,7 @@ export default function ReviewCard({
   children,
 }: CardProps) {
   return (
-    <CardNext className="w-[400px] flex-shrink-0">
+    <CardNext className="w-[400px] flex-shrink-0" isBlurred>
       <CardHeader className="flex gap-3">
         <Avatar
           isBordered

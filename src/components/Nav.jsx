@@ -9,16 +9,21 @@ import {
   NavbarMenuToggle,
 } from "@nextui-org/navbar";
 import ThemeToggle from "./ThemeToggle";
+import { Link } from "@nextui-org/react";
 
 export default function Nav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const menuItems = [{ name: "Home" }, { name: "About" }, { name: "Services" }];
+  const menuItems = [
+    { name: "Projects", route: "projects" },
+    { name: "About" },
+    { name: "Services" },
+  ];
 
   return (
     <Navbar
       onMenuOpenChange={setIsMenuOpen}
-      className="bg-black text-white font-space"
+      className="bg-transparent font-space"
     >
       <NavbarContent className="gap-4 flex-grow">
         <NavbarMenuToggle
@@ -27,12 +32,16 @@ export default function Nav() {
         />
 
         <NavbarBrand className="flex-grow-0">
-          <p className="font-bold font-space text-3xl">ANDO</p>
+          <Link title={"home"} href={`/`} color="foreground">
+            <p className="font-bold font-space text-3xl">ANDO</p>
+          </Link>
         </NavbarBrand>
 
         {menuItems.map((item) => (
           <NavbarItem className="text-xl hidden sm:flex ">
-            {item.name}
+            <Link title={item.name} href={`${item.route}`} color="foreground">
+              {item.name}
+            </Link>
           </NavbarItem>
         ))}
       </NavbarContent>

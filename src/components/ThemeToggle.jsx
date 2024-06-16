@@ -1,9 +1,11 @@
-import { Switch } from "@nextui-org/react";
+import { Button, Switch } from "@nextui-org/react";
 import React from "react";
 import { SunIcon } from "./SunIcon";
 import { MoonIcon } from "./MoonIcon";
 
 export default function ThemeToggle() {
+  const [checked, setChecked] = React.useState(false);
+
   const handleThemeChange = (e) => {
     const theme = e.target.checked ? "light" : "dark";
 
@@ -20,25 +22,35 @@ export default function ThemeToggle() {
     } else {
       document.documentElement.classList.remove("dark");
     }
+
+    setChecked(e.target.checked);
   };
 
-  return (
-    <Switch
-      // defaultChecked={window.localStorage.getItem("theme") === "dark"}
-      size="lg"
-      className="dark:fill-gray-200 fill-yellow-500"
-      startContent={<SunIcon />}
-      endContent={<MoonIcon />}
-      onChange={handleThemeChange}
-      classNames={{
-        wrapper: "!bg-blue-500 dark:!bg-gray-800",
-      }}
-    />
+  React.useEffect(() => {
+    const theme = window.localStorage.getItem("theme");
 
-    // <select name="themeSwitch" id="themeSwitch" onChange={handleThemeChange}>
-    //   <option value="system">System</option>
-    //   <option value="dark">Dark</option>
-    //   <option value="light">Light</option>
-    // </select>
+    console.log(theme);
+
+    if (theme === "light") {
+      setChecked(true);
+    }
+  }, []);
+
+  return (
+    <div>
+      <Switch
+        defaultSelected={checked}
+        isSelected={checked}
+        color="default"
+        size="lg"
+        className="dark:fill-gray-200 fill-yellow-500"
+        startContent={<SunIcon />}
+        endContent={<MoonIcon />}
+        onChange={handleThemeChange}
+        classNames={{
+          wrapper: "!bg-blue-500 dark:!bg-gray-800",
+        }}
+      />
+    </div>
   );
 }

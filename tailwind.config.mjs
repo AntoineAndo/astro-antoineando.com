@@ -10,7 +10,11 @@ export default {
     fontFamily: {
       space: ["Space", "sans-serif"],
     },
-    extend: {},
+    extend: {
+      backgroundImage: {
+        bg: 'url("/images/1683086631.jpg")',
+      },
+    },
   },
   darkMode: "selector",
   plugins: [
@@ -18,14 +22,19 @@ export default {
       themes: {
         light: {
           colors: {
-            background: "white",
-            accent: "blue",
+            background: "#eee",
+            background2: "#ccc",
+            accent: "rgb(58, 129, 245)",
+            text: "#13151a",
           },
         },
         dark: {
           colors: {
+            // background: "black",
             background: "#13151a",
+            background2: "#1f2937",
             accent: "#FA1515",
+            text: "white",
           },
         },
       },
