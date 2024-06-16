@@ -1,13 +1,55 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { Button } from "@nextui-org/react";
-
-import "../../global.css";
+import ReviewCard from "../components/ReviewCard";
+import { Divider, ScrollShadow, Spacer } from "@nextui-org/react";
 ---
 
 <Layout title="Welcome to Astro.">
-  <main>
-    <h1 class="text-accent text-7xl font-bold font-space">Antoine ANDO</h1>
-    <h2 class="font-space text-2xl">Front-end Javascript Developer</h2>
-  </main>
+  <h1 class="text-accent text-7xl font-bold">Antoine ANDO</h1>
+  <h2 class="text-2xl">Front-end Javascript Developer</h2>
+
+  <h3 class="text-xl">
+    But don't take my word for it, here's what my clients have to say about me:
+  </h3>
+  <ScrollShadow
+    orientation="horizontal"
+    hideScrollBar
+    className="flex flex-row gap-5 overflow-y-auto p-5 w-4/5"
+  >
+    <ReviewCard name="Julien Cantin" company="CollecOnline" imageFallback="J">
+      Une mission rapide et efficace. Antoine a mené à bien sa mission et la
+      terminée plus rapidement que prévu. Je recommande fortement Antoine pour
+      ses compétences et son sérieux.
+    </ReviewCard>
+    <ReviewCard name="Julien Cantin" company="CollecOnline" imageFallback="J">
+      Une mission rapide et efficace. Antoine a mené à bien sa mission et la
+      terminée plus rapidement que prévu. Je recommande fortement Antoine pour
+      ses compétences et son sérieux.
+    </ReviewCard>
+    <ReviewCard name="Julien Cantin" company="CollecOnline" imageFallback="J">
+      Une mission rapide et efficace. Antoine a mené à bien sa mission et la
+      terminée plus rapidement que prévu. Je recommande fortement Antoine pour
+      ses compétences et son sérieux.
+    </ReviewCard>
+    <ReviewCard name="Julien Cantin" company="CollecOnline" imageFallback="J">
+      Une mission rapide et efficace. Antoine a mené à bien sa mission et la
+      terminée plus rapidement que prévu. Je recommande fortement Antoine pour
+      ses compétences et son sérieux.
+    </ReviewCard>
+    <ReviewCard name="Julien Cantin" company="CollecOnline" imageFallback="J">
+      Une mission rapide et efficace. Antoine a mené à bien sa mission et la
+      terminée plus rapidement que prévu. Je recommande fortement Antoine pour
+      ses compétences et son sérieux.
+    </ReviewCard>
+    <ReviewCard name="Julien Cantin" company="CollecOnline" imageFallback="J">
+      Une mission rapide et efficace. Antoine a mené à bien sa mission et la
+      terminée plus rapidement que prévu. Je recommande fortement Antoine pour
+      ses compétences et son sérieux.
+    </ReviewCard>
+    <ReviewCard name="Julien Cantin" company="CollecOnline" imageFallback="J">
+      Une mission rapide et efficace. Antoine a mené à bien sa mission et la
+      terminée plus rapidement que prévu. Je recommande fortement Antoine pour
+      ses compétences et son sérieux.
+    </ReviewCard>
+  </ScrollShadow>
 </Layout>

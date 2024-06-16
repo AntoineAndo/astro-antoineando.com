@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Navbar,
   NavbarBrand,
@@ -11,31 +11,32 @@ import {
 import ThemeToggle from "./ThemeToggle";
 
 export default function Nav() {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const menuItems = [{ name: "Home" }, { name: "About" }, { name: "Services" }];
 
   return (
     <Navbar
-      client:visible
       onMenuOpenChange={setIsMenuOpen}
       className="bg-black text-white font-space"
     >
-      <NavbarContent>
+      <NavbarContent className="gap-4 flex-grow">
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           className="sm:hidden"
         />
 
-        <NavbarBrand>
+        <NavbarBrand className="flex-grow-0">
           <p className="font-bold font-space text-3xl">ANDO</p>
         </NavbarBrand>
-      </NavbarContent>
 
-      <NavbarContent className="hidden sm:flex gap-4">
         {menuItems.map((item) => (
-          <NavbarItem className="text-xl">{item.name}</NavbarItem>
+          <NavbarItem className="text-xl hidden sm:flex ">
+            {item.name}
+          </NavbarItem>
         ))}
+      </NavbarContent>
+      <NavbarContent className="!flex-grow-0 hidden sm:flex">
         <ThemeToggle />
       </NavbarContent>
 

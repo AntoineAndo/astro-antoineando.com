@@ -1,5 +1,6 @@
 ---
 import Nav from "../components/Nav";
+import "../../global.css";
 
 interface Props {
   title: string;
@@ -18,9 +19,13 @@ const { title } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
-  <body>
-    <Nav client:visible />
-    <slot />
+  <body class="font-space">
+    <div class="relative flex flex-col h-screen">
+      <Nav client:load />
+      <main class="p-5 flex flex-col items-center">
+        <slot />
+      </main>
+    </div>
   </body>
 </html>
 <style is:global>
@@ -51,3 +56,16 @@ const { title } = Astro.props;
       monospace;
   }
 </style>
+<script>
+  const theme = window.localStorage.getItem("theme");
+
+  if (theme) {
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  } else {
+    document.documentElement.classList.add("system");
+  }
+</script>
