@@ -1,15 +1,18 @@
 ---
-import Nav from "../components/Nav";
 import "../../global.css";
+import Navigation from "../components/Navigation.astro";
 
 interface Props {
   title: string;
 }
 
 const { title } = Astro.props;
+Astro.response.headers.set(
+  "Cache-Control",
+  "public, s-maxage=60, stale-while-revalidate=30"
+);
 ---
 
-<!doctype html>
 <html lang="en" class="bg-gradient-to-br from-background to-background2">
   <head>
     <meta charset="UTF-8" />
@@ -17,57 +20,82 @@ const { title } = Astro.props;
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
+
+    <slot name="head" />
     <title>{title}</title>
   </head>
   <body class="font-space text-text">
+    <!-- Theme script -->
+    <script is:inline>
+      (function () {
+        console.log("azdaz", localStorage.getItem("theme"));
+        // detect system theme and monitor for changes
+        const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+        darkQuery.addListener(function (event) {
+          //@ts-ignore
+          window.__setPreferredTheme(event.matches ? "dark" : "light");
+        });
+        try {
+          setTheme(
+            localStorage.getItem("theme") ||
+              (darkQuery.matches ? "dark" : "light") ||
+              "dark"
+          );
+        } catch (e) {}
+
+        function setTheme(newTheme) {
+          if (newTheme === "dark") {
+            document.documentElement.classList.add("dark");
+          } else {
+            document.documentElement.classList.remove("dark");
+          }
+
+          window.__theme = newTheme;
+          window.__onThemeChange(newTheme);
+        }
+
+        window.__onThemeChange = function () {};
+
+        window.__setPreferredTheme = function (newTheme) {
+          localStorage.setItem("theme", newTheme);
+          setTheme(newTheme);
+        };
+      })();
+    </script>
+
     <div class="relative flex flex-col h-screen">
-      <Nav client:load />
-      <main class="p-5 flex flex-col items-center">
+      <Navigation />
+      <main class="flex flex-col items-center overflow-y-auto pb-20">
         <slot />
       </main>
     </div>
+    <style is:global>
+      :root {
+        --accent: 136, 58, 234;
+        --accent-light: 224, 204, 250;
+        --accent-dark: 49, 10, 101;
+        --accent-gradient: linear-gradient(
+          45deg,
+          rgb(var(--accent)),
+          rgb(var(--accent-light)) 30%,
+          white 60%
+        );
+      }
+      html {
+        font-family: system-ui, sans-serif;
+        background: #13151a;
+      }
+      code {
+        font-family:
+          Menlo,
+          Monaco,
+          Lucida Console,
+          Liberation Mono,
+          DejaVu Sans Mono,
+          Bitstream Vera Sans Mono,
+          Courier New,
+          monospace;
+      }
+    </style>
   </body>
 </html>
-<style is:global>
-  :root {
-    --accent: 136, 58, 234;
-    --accent-light: 224, 204, 250;
-    --accent-dark: 49, 10, 101;
-    --accent-gradient: linear-gradient(
-      45deg,
-      rgb(var(--accent)),
-      rgb(var(--accent-light)) 30%,
-      white 60%
-    );
-  }
-  html {
-    font-family: system-ui, sans-serif;
-    background: #13151a;
-  }
-  code {
-    font-family:
-      Menlo,
-      Monaco,
-      Lucida Console,
-      Liberation Mono,
-      DejaVu Sans Mono,
-      Bitstream Vera Sans Mono,
-      Courier New,
-      monospace;
-  }
-</style>
-<script>
-  const theme = window.localStorage.getItem("theme");
-
-  if (theme) {
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  } else {
-    document.documentElement.classList.add("system");
-  }
-
-  console.log("Theme layout", theme);
-</script>

@@ -14,6 +14,9 @@ export default {
       backgroundImage: {
         bg: 'url("/images/1683086631.jpg")',
       },
+      boxShadow: {
+        eclipse: "0px -20px 20px 0px rgba(255, 250, 233, 0.9)",
+      },
     },
   },
   darkMode: "selector",
@@ -34,7 +37,9 @@ export default {
             background: "#13151a",
             background2: "#1f2937",
             accent: "#FA1515",
-            text: "white",
+            // text: "rgb(226, 232, 240)",
+            text: "rgba(255, 255, 255, 0.8)",
+            "text-accent": "white",
           },
         },
       },
