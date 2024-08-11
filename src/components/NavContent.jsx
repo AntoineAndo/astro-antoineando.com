@@ -21,7 +21,7 @@ export default function Nav(props) {
   }, []);
 
   const menuItems = [
-    { name: "Home", route: "" },
+    { name: "Home", route: "/" },
     { name: "About", route: "about" },
     { name: "Projects", route: "projects" },
   ];

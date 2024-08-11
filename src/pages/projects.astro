@@ -1,5 +1,52 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { sanityClient } from "sanity:client";
+import SanityPicture, { picture } from "astro-sanity-picture";
+import imageUrlBuilder from "@sanity/image-url";
+import type { ImageUrlBuilder } from "@sanity/image-url/lib/types/builder";
+
+const projects = await sanityClient.fetch(
+  `*[_type == "project" && defined(slug)] | order(publishedAt desc) {
+    title,
+    slug,
+    shortDescription,
+    ${picture("mainImage")}
+  }`
+);
+
+const builder = imageUrlBuilder(sanityClient);
 ---
 
-<Layout title="Projects - Antoine ANDO" />
+<Layout title="Projects - Antoine ANDO">
+  <h1 class="font-bold text-4xl mb-5">Projects</h1>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    {
+      projects.map((project: any) => {
+        return (
+          <div
+            key={project._id}
+            class="border-text border-solid border-2 p-4 rounded-lg hover:bg-darkDots bg-[length:10%_25%]"
+          >
+            <a href={`/projects/${project.slug.current}`} class="flex flex-col">
+              <picture class="self-center mb-5">
+                <img
+                  src={project.mainImage.asset.url + "?h=200"}
+                  alt="Flowers"
+                />
+              </picture>
+              {/* 
+              <SanityPicture
+                image={project.mainImage}
+                imageUrlBuilder={builder}
+                sizes="(min-width:768px) 50vw, 100vw"
+              /> */}
+              <h2 class="text-xl font-bold">{project.title}</h2>
+              <p>{project.shortDescription}</p>
+            </a>
+          </div>
+        );
+      })
+    }
+  </div>
+</Layout>

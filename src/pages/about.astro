@@ -4,67 +4,71 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="About me - Antoine Ando">
-  <!-- Content -->
-  <div class="p-5 flex flex-col w-full gap-3">
-    <h2 class="text-2xl font-bold">ABOUT ME</h2>
-    <p>
-      Over 7 years of experience in web development, I have worked on various
-      projects, from small websites to large web applications.
-      <br />
-      I am specialized in front-end development, with a strong focus on user experience
-      and performance.
-    </p>
-    <p>
-      I am passionate about web technologies and I am always looking for new
-      challenges.
-    </p>
-    <p>
-      I am currently working as a freelance developer, helping companies to
-      build their web applications.
-      <br />
-      I am also working on personal projects to improve my skills and learn new technologies.
-    </p>
-  </div>
+  <!-- Container -->
+  <div class="flex flex-col gap-5 md:w-3/4">
+    <!-- Content -->
+    <div class="p-5 flex flex-col w-full gap-3 md:text-medium">
+      <h2 class="text-2xl md:text-4xl font-bold">ABOUT ME</h2>
+      <p>
+        Over 7 years of experience in web development, I have worked on various
+        projects, from small websites to large web applications.
+        <br />
+        I am specialized in front-end development, with a strong focus on user experience
+        and performance.
+      </p>
+      <p>
+        I am passionate about web technologies and I am always looking for new
+        challenges.
+      </p>
+      <p>
+        I am currently working as a freelance developer, helping companies to
+        build their web applications.
+        <br />
+        I am also working on personal projects to improve my skills and learn new
+        technologies.
+      </p>
+    </div>
 
-  <Divider />
+    <Divider />
 
-  <!-- Skills -->
-  <div class="p-5 pt-10 w-full gap-3 flex flex-col">
-    <h2 class="text-2xl font-bold">SKILLS</h2>
-    <div class="grid grid-cols-2 gap-5">
-      <div>
-        <h3 class="text-xl font-bold">Front-end</h3>
-        <ul>
-          <li>HTML5</li>
-          <li>CSS3</li>
-          <li>JavaScript/TS</li>
-          <li>React</li>
-          <li>React Native</li>
-          <li>NextJS</li>
-          <li>Angular</li>
-        </ul>
-      </div>
-      <div>
-        <h3 class="text-xl font-bold">Back-end</h3>
-        <ul>
-          <li>Node.js</li>
-          <li>Express</li>
-          <li>PHP</li>
-          <li>REST API</li>
-          <li>PostgreSQL</li>
-          <li>MongoDB</li>
-          <li>MySQL</li>
-        </ul>
-      </div>
-      <div>
-        <h3 class="text-xl font-bold">Tools</h3>
-        <ul>
-          <li>Git</li>
-          <li>Copilot</li>
-          <li>VS Code</li>
-          <li>Figma</li>
-          <li>Photoshop</li>
-        </ul>
+    <!-- Skills -->
+    <div class="p-5 pt-10 w-full gap-3 flex flex-col">
+      <h2 class="text-4xl font-bold">SKILLS</h2>
+      <div class="grid grid-cols-2 gap-5">
+        <div>
+          <h3 class="text-xl font-bold">Front-end</h3>
+          <ul>
+            <li>HTML5</li>
+            <li>CSS3</li>
+            <li>JavaScript/TS</li>
+            <li>React</li>
+            <li>React Native</li>
+            <li>NextJS</li>
+            <li>Angular</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold">Back-end</h3>
+          <ul>
+            <li>Node.js</li>
+            <li>Express</li>
+            <li>PHP</li>
+            <li>REST API</li>
+            <li>PostgreSQL</li>
+            <li>MongoDB</li>
+            <li>MySQL</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold">Tools</h3>
+          <ul>
+            <li>Git</li>
+            <li>Copilot</li>
+            <li>VS Code</li>
+            <li>Figma</li>
+            <li>Photoshop</li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
