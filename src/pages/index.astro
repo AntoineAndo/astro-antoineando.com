@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import ReviewCard from "../components/ReviewCard";
+import CardComponent from "../components/CardComponent";
 import { Envelope } from "../components/icons/Envelope";
 import { Button, Divider } from "@nextui-org/react";
 ---
@@ -65,19 +65,19 @@ import { Button, Divider } from "@nextui-org/react";
       <div
         class="flex w-full gap-5 flex-nowrap md:flex-wrap justify-start md:justify-center text-xl overflow-y-auto pl-6 pr-6 pb-6 mx-[-20px] md:mx-0"
       >
-        <ReviewCard
-          name="Julien Cantin"
-          company="CollecOnline"
+        <CardComponent
+          title="Julien Cantin"
+          subtitle="CollecOnline"
           imageFallback="J"
           detail="React, ThreeJS"
         >
           Une mission rapide et efficace. Antoine a mené à bien sa mission et la
           terminée plus rapidement que prévu. Je recommande fortement Antoine
           pour ses compétences et son sérieux.
-        </ReviewCard>
-        <ReviewCard
-          name="Julien Cantin"
-          company="CollecOnline"
+        </CardComponent>
+        <CardComponent
+          title="Julien Cantin"
+          subtitle="CollecOnline"
           imageFallback="J"
         >
           lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
@@ -85,7 +85,7 @@ import { Button, Divider } from "@nextui-org/react";
           minim veniam, quis nostrud exercitation ullamco laboris nisi ut
           aliquip ex ea commodo consequat. Duis aute irure dolor in
           reprehenderit in voluptate.
-        </ReviewCard>
+        </CardComponent>
       </div>
     </div>
 

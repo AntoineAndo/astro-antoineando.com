@@ -10,8 +10,8 @@ import {
 } from "@nextui-org/react";
 
 interface CardProps {
-  name: string;
-  company: string;
+  title: string;
+  subtitle: string;
   imageUrl?: string;
   imageFallback?: string;
   children: any;
@@ -19,9 +19,9 @@ interface CardProps {
   detail?: any;
 }
 
-export default function ReviewCard({
-  name,
-  company,
+export default function CardComponent({
+  title,
+  subtitle,
   imageUrl,
   imageFallback,
   children,
@@ -37,15 +37,17 @@ export default function ReviewCard({
       isBlurred
     >
       <CardHeader className="flex gap-3">
-        <Avatar
-          isBordered
-          showFallback
-          src={imageUrl}
-          fallback={<span className="text-xl">{imageFallback}</span>}
-        />
+        {(imageUrl || imageFallback) && (
+          <Avatar
+            isBordered
+            showFallback
+            src={imageUrl}
+            fallback={<span className="text-xl">{imageFallback}</span>}
+          />
+        )}
         <div className="flex flex-col">
-          <p className="text-medium font-semibold">{name}</p>
-          <p className="text-sm text-default-500 text-left">{company}</p>
+          <p className="text-medium font-semibold">{title}</p>
+          <p className="text-sm text-default-500 text-left">{subtitle}</p>
         </div>
       </CardHeader>
       <Divider />

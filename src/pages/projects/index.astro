@@ -1,9 +1,9 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import React from "react";
+import Layout from "../../layouts/Layout.astro";
 import { sanityClient } from "sanity:client";
 import SanityPicture, { picture } from "astro-sanity-picture";
 import imageUrlBuilder from "@sanity/image-url";
-import type { ImageUrlBuilder } from "@sanity/image-url/lib/types/builder";
 
 const projects = await sanityClient.fetch(
   `*[_type == "project" && defined(slug)] | order(publishedAt desc) {
@@ -13,8 +13,7 @@ const projects = await sanityClient.fetch(
     ${picture("mainImage")}
   }`
 );
-
-const builder = imageUrlBuilder(sanityClient);
+import CardComponent from "../../components/CardComponent";
 ---
 
 <Layout title="Projects - Antoine ANDO">
@@ -24,27 +23,31 @@ const builder = imageUrlBuilder(sanityClient);
     {
       projects.map((project: any) => {
         return (
-          <div
-            key={project._id}
-            class="border-text border-solid border-2 p-4 rounded-lg hover:bg-darkDots bg-[length:10%_25%]"
-          >
-            <a href={`/projects/${project.slug.current}`} class="flex flex-col">
+          <a href={"/projects/" + project.slug.current}>
+            <CardComponent
+              title={project.title}
+              subtitle={project.shortDescription}
+            >
               <picture class="self-center mb-5">
                 <img
                   src={project.mainImage.asset.url + "?h=200"}
                   alt="Flowers"
                 />
               </picture>
-              {/* 
-              <SanityPicture
-                image={project.mainImage}
-                imageUrlBuilder={builder}
-                sizes="(min-width:768px) 50vw, 100vw"
-              /> */}
-              <h2 class="text-xl font-bold">{project.title}</h2>
-              <p>{project.shortDescription}</p>
-            </a>
-          </div>
+
+              {/* <CardNext key={project._id}>
+            <CardBody>
+              <a
+                href={`/projects/${project.slug.current}`}
+                class="flex flex-col"
+              >
+                <h2 class="text-xl font-bold">{project.title}</h2>
+                <p>{project.shortDescription}</p>
+              </a>
+            </CardBody>
+          </CardNext> */}
+            </CardComponent>
+          </a>
         );
       })
     }
