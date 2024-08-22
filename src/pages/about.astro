@@ -2,6 +2,7 @@
 import { Divider, Spacer } from "@nextui-org/react";
 import Layout from "../layouts/Layout.astro";
 import { Github } from "../components/icons/Github";
+import { Linkedin } from "../components/icons/Linkedin";
 ---
 
 <Layout title="About me - Antoine Ando">
@@ -93,17 +94,21 @@ import { Github } from "../components/icons/Github";
           target="_blank"
           class="fill-text flex flex-col items-center"
         >
-          <div class="h-[50px] w-[50px]">
+          <div class="h-[50px] w-[50px] p-[5px]">
             <Github />
           </div>
           <h3 class="text-xl font-bold">GitHub</h3>
         </a>
-        <div>
+        <a
+          href="https://www.linkedin.com/in/antoine-ando-0a2061101/"
+          target="_blank"
+          class="fill-text flex flex-col items-center"
+        >
+          <div class="h-[50px] w-[50px]">
+            <Linkedin />
+          </div>
           <h3 class="text-xl font-bold">LinkedIn</h3>
-          <a href="https://www.linkedin.com/in/antoineando/" target="_blank"
-            >antoineando</a
-          >
-        </div>
+        </a>
       </div>
     </div>
   </div>
