@@ -15,6 +15,8 @@ import { Divider } from "@nextui-org/react";
 export default function Nav(props) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  let MobileThemeButton = props.MobileThemeButton;
+
   useEffect(() => {
     prefetch("/", { with: "fetch" });
     prefetch("/projects", { with: "fetch" });
@@ -58,7 +60,7 @@ export default function Nav(props) {
           </NavbarItem>
         ))}
       </NavbarContent>
-      <NavbarContent className="!flex-grow-0 hidden sm:flex">
+      <NavbarContent className="!flex-grow-0 sm:flex">
         {props?.children}
       </NavbarContent>
 
@@ -72,7 +74,7 @@ export default function Nav(props) {
       <NavbarMenu>
         {menuItems.map((item, index) => (
           <>
-            <NavbarMenuItem>
+            <NavbarMenuItem className="py-5">
               <a title={item.name} href={`${item.route}`} data-astro-prefetch>
                 {item.name}
               </a>
