@@ -6,7 +6,6 @@ import Layout from "../../layouts/Layout.astro";
 import { sanityClient } from "sanity:client";
 import { picture } from "astro-sanity-picture";
 import { toHTML } from "@portabletext/to-html";
-import type { bl } from "../../../sanity/dist/static/sanity-b8724193";
 
 export const getStaticPaths = (async () => {
   const projects = await sanityClient.fetch(
