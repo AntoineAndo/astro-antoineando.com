@@ -1,8 +1,12 @@
 ---
+export const prerender = true;
+
 import type { GetStaticPaths } from "astro";
 import Layout from "../../layouts/Layout.astro";
 import { sanityClient } from "sanity:client";
 import { picture } from "astro-sanity-picture";
+import { toHTML } from "@portabletext/to-html";
+import type { bl } from "../../../sanity/dist/static/sanity-b8724193";
 
 export const getStaticPaths = (async () => {
   const projects = await sanityClient.fetch(
@@ -16,23 +20,34 @@ export const getStaticPaths = (async () => {
   );
 
   return projects.map((project: any) => {
-    console.log(project);
     return {
       params: { title: project.title, slug: project.slug.current },
       props: {
         title: project.title,
         mainImage: project.mainImage.asset.url,
+        description: project.description,
       },
     };
   });
 }) satisfies GetStaticPaths;
 
-const { title, mainImage } = Astro.props;
+const { title, mainImage, description } = Astro.props;
+
+let d = toHTML(description, {
+  components: {
+    block: {
+      h2: ({ children }) => {
+        return `<h2 class="text-2xl mt-5">${children}</h2>`;
+      },
+    },
+  },
+});
 ---
 
 <Layout title={title + " - Antoine Ando"}>
   <h1 class="text-4xl mb-5">{title}</h1>
   <div class="w-1/2">
-    <img src={mainImage} alt="Main image" class="" />
+    <img src={`${mainImage}?h=500`} alt="Main image" class="" />
+    <Fragment set:html={d} />
   </div>
 </Layout>
