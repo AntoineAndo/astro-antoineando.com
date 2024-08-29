@@ -3,11 +3,11 @@ import {
   CardBody,
   CardFooter,
   Divider,
-  Image,
   Link,
   CardHeader,
   Avatar,
 } from "@nextui-org/react";
+import { useState } from "react";
 
 interface CardProps {
   title: string;
@@ -17,6 +17,7 @@ interface CardProps {
   children: any;
   classList?: string;
   detail?: any;
+  translation?: any;
 }
 
 export default function CardComponent({
@@ -27,7 +28,14 @@ export default function CardComponent({
   children,
   classList,
   detail,
+  translation,
 }: CardProps) {
+  const [showOriginal, setShowOriginal] = useState(!translation ? true : false);
+
+  const toggleTranslation = () => {
+    setShowOriginal(!showOriginal);
+  };
+
   return (
     <CardNext
       className={
@@ -51,8 +59,20 @@ export default function CardComponent({
         </div>
       </CardHeader>
       <Divider />
-      <CardBody>
-        <p className="text-justify text-medium md:text-xl">{children}</p>
+      <CardBody className="gap-3">
+        <p className="text-justify text-medium md:text-xl">
+          {showOriginal ? children : translation}
+        </p>
+        {translation && (
+          <div className="flex justify-end">
+            <Link
+              className="text-sm text-default-500 cursor-pointer"
+              onPress={toggleTranslation}
+            >
+              {showOriginal ? "Show Translation" : "Show Original"}
+            </Link>
+          </div>
+        )}
       </CardBody>
       {detail && (
         <>

@@ -28,7 +28,6 @@ Astro.response.headers.set(
     <!-- Theme script -->
     <script is:inline>
       (function () {
-        console.log("azdaz", localStorage.getItem("theme"));
         // detect system theme and monitor for changes
         const darkQuery = window.matchMedia("(prefers-color-scheme: dark)");
         darkQuery.addListener(function (event) {

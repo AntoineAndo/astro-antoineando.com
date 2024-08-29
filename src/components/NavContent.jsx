@@ -10,12 +10,10 @@ import {
 } from "@nextui-org/navbar";
 
 import { prefetch } from "astro:prefetch";
-import { Divider } from "@nextui-org/react";
+import { Divider, Link } from "@nextui-org/react";
 
 export default function Nav(props) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  let MobileThemeButton = props.MobileThemeButton;
 
   useEffect(() => {
     prefetch("/", { with: "fetch" });
