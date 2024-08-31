@@ -8,6 +8,7 @@ import { Button, Divider } from "@nextui-org/react";
 <Layout title="Antoine ANDO">
   <!-- Header -->
   <div
+    id="section1"
     class="relative flex flex-col items-center justify-center min-h-[100%] gap-0 sm:gap-1 text-center"
   >
     <div
@@ -26,6 +27,7 @@ import { Button, Divider } from "@nextui-org/react";
   <div class="flex flex-col w-full gap-10 text-center items-center mb-44">
     <!-- Intro -->
     <div
+      id="section2"
       class="flex flex-col w-full md:w-4/5 gap-5 text-xl md:text-2xl text-text p-5"
     >
       <p>
@@ -40,7 +42,7 @@ import { Button, Divider } from "@nextui-org/react";
       </p>
 
       <!-- Link to about page -->
-      <div class="flex justify-end mt-2">
+      <div class="flex justify-end mt-2" id="test">
         <a href="/about" class="group text-accent2 flex gap-5 items-center">
           More about me
           <button
@@ -130,6 +132,14 @@ import { Button, Divider } from "@nextui-org/react";
       </p>
     </div>
   </div>
+
+  <!-- Rocket -->
+  <div
+    class="rocket aspect-square fixed cursor-pointer -rotate-45 -top-28 right-10"
+    id="rocket"
+  >
+    🚀
+  </div>
 </Layout>
 <script>
   //onclick function
@@ -140,5 +150,39 @@ import { Button, Divider } from "@nextui-org/react";
   const button = document.querySelector("[data-email-button]");
   if (button) {
     button.addEventListener("click", sendEmail);
+  }
+</script>
+
+<script is:inline>
+  gsap.to("#rocket", {
+    y: "100vh",
+    scale: 2.5,
+    duration: 0.5,
+    ease: "back.out(1)",
+    //When the top of the viewport reaches the bottom of #section1, trigger the animation
+    scrollTrigger: {
+      scroller: "main",
+      trigger: "#section2",
+      start: "top center",
+      toggleActions: "play play reverse reverse",
+      // fastScrollEnd: 3000,
+    },
+  });
+
+  const rocket = document.querySelector("#rocket");
+  if (rocket) {
+    rocket.addEventListener("click", () => {
+      //Scroll to top
+      document.querySelector("main").scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+
+      //Animate the rocket to scroll out of the screen
+      // gsap.to("#rocket", {
+      //   y: "-100vh",
+      //   duration: 2,
+      // });
+    });
   }
 </script>
