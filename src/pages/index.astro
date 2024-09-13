@@ -12,7 +12,8 @@ import { Button, Divider } from "@nextui-org/react";
     class="relative flex flex-col items-center justify-center min-h-[100%] gap-0 sm:gap-1 text-center"
   >
     <div
-      class="sun w-[60%] aspect-square rounded-full absolute dark:shadow-eclipse shadow-lightEclipse"
+      id="sun"
+      class="sun w-[60%] aspect-square rounded-full dark:shadow-eclipse shadow-lightEclipse absolute -z-10"
     >
     </div>
     <h1 class="text-accent text-[11vw] sm:text-5xl md:text-8xl font-bold z-10">
@@ -31,9 +32,12 @@ import { Button, Divider } from "@nextui-org/react";
       class="flex flex-col w-full md:w-4/5 gap-5 text-xl md:text-2xl text-text p-5"
     >
       <p>
-        Hi, I'm Antoine, a front-end developer from France based in South Korea.
-        I have been working in the web development industry for over 5 years
-        now.
+        Hi, I'm <span
+          id="name"
+          class="relative after:absolute after:w-[var(--line-width)] after:bottom-[2px] after:border-solid after:border-text after:border-1 after:left-0"
+          >Antoine</span
+        >, a front-end developer from France. I have been working in the web
+        development industry for over 5 years now.
       </p>
       <p>
         I specialize in building web applications using modern technologies such
@@ -154,6 +158,8 @@ import { Button, Divider } from "@nextui-org/react";
 </script>
 
 <script is:inline>
+  const isMobile = window.matchMedia("(max-width: 640px)").matches;
+
   gsap.to("#rocket", {
     y: "100vh",
     scale: 2.5,
@@ -166,6 +172,19 @@ import { Button, Divider } from "@nextui-org/react";
       start: "top center",
       toggleActions: "play play reverse reverse",
       // fastScrollEnd: 3000,
+    },
+  });
+
+  const name = document.querySelector("#name");
+
+  gsap.to("#name", {
+    //underline
+    "--line-width": 100,
+    duration: 0.6,
+    scrollTrigger: {
+      scroller: "main",
+      trigger: "#section2",
+      start: "center bottom",
     },
   });
 
