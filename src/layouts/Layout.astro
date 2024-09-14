@@ -34,6 +34,8 @@ Astro.response.headers.set(
   </head>
   <body class="font-space text-text">
     <script is:inline>
+      import { transform } from "typescript";
+
       // use a script tag or an external JS file
       document.addEventListener("DOMContentLoaded", (event) => {
         gsap.registerPlugin(ScrollTrigger);
@@ -81,6 +83,13 @@ Astro.response.headers.set(
       <Navigation />
       <main class="flex flex-col items-center overflow-y-auto">
         <slot />
+
+        <!-- shooting stars-->
+        <div
+          id="star"
+          class="fixed opacity-0 top-0 right-0 shooting-star h-[2px] md:h-1 w-1 bg-gradient-to-l from-white to-transparent rounded-full -z-10"
+        >
+        </div>
       </main>
     </div>
     <style is:global>
@@ -112,4 +121,105 @@ Astro.response.headers.set(
       }
     </style>
   </body>
+
+  <script is:inline>
+    const ANGLE_DEG = 145;
+    const ANGLE = ANGLE_DEG * (Math.PI / 180);
+    const TRAIL_DURATION = 0.5;
+
+    var t = gsap.timeline({
+      repeat: -1,
+      repeatRefresh: true,
+      ease: "none",
+      onRepeat: () => {
+        memo_trail_length = undefined;
+        memo_total_length = undefined;
+      },
+      //A number between 1 and 4
+      delay: gsap.utils.random(3, 7),
+      repeatDelay: 5,
+    });
+
+    let memo_trail_length, memo_total_length;
+    const getTrailLength = () => {
+      if (memo_trail_length) return memo_trail_length;
+
+      const trail_length = gsap.utils.random(300, 700);
+      const total_length = gsap.utils.random(200, 500) + trail_length;
+
+      memo_total_length = total_length;
+      memo_trail_length = trail_length;
+
+      return trail_length;
+    };
+
+    const getTotalLength = (trail_length) => {
+      if (memo_total_length) return memo_total_length;
+
+      const total_length = gsap.utils.random(200, 500) + trail_length;
+
+      memo_total_length = total_length;
+
+      return total_length;
+    };
+
+    getTrailOffDuration = (trail_length, total_length) => {
+      const TRAIL_SPEED = total_length / TRAIL_DURATION;
+
+      const TRAIL_OFF_DURATION = trail_length / TRAIL_SPEED;
+      return TRAIL_OFF_DURATION;
+    };
+
+    t.fromTo(
+      "#star",
+      {
+        rotate: ANGLE_DEG,
+        transformOrigin: "top right",
+        opacity: 1,
+        x: () => -gsap.utils.random(0, window.innerWidth / 1.2),
+        y: () => gsap.utils.random(-300, window.innerHeight / 1.5),
+      },
+      {
+        //X and y taking into acount the angle
+        width: () => getTrailLength(),
+        x:
+          "+=" +
+          parseFloat(
+            (Math.cos(ANGLE) * getTotalLength(getTrailLength())).toFixed(2)
+          ),
+        y:
+          "+=" +
+          parseFloat(
+            (Math.sin(ANGLE) * getTotalLength(getTrailLength())).toFixed(2)
+          ),
+        ease: "none",
+        duration: TRAIL_DURATION,
+      }
+    );
+
+    t.to("#star", {
+      width: 0,
+      x:
+        "+=" +
+        parseFloat(
+          (
+            Math.cos(ANGLE) * getTrailLength() -
+            Math.cos(ANGLE) * getTrailLength()
+          ).toFixed(2)
+        ),
+      y:
+        "+=" +
+        parseFloat(
+          (
+            Math.sin(ANGLE) * getTrailLength() -
+            Math.sin(ANGLE) * getTrailLength()
+          ).toFixed(2)
+        ),
+      ease: "none",
+      duration: getTrailOffDuration(getTrailLength(), getTotalLength()),
+      // opacity: 0,
+    });
+
+    // t.play()
+  </script>
 </html>

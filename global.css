@@ -5,6 +5,7 @@
 
 :root {
     --line-width: 0%;
+    --shadow: 0px -20px 20px 0px rgba(255, 250, 233, 0.9);
 }
 
 @font-face {

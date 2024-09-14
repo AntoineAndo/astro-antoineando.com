@@ -15,10 +15,14 @@ export default {
         bg: 'url("/images/1683086631.jpg")',
         darkDots: "radial-gradient(lightgrey 0%,transparent 5%)",
         lightDots: "radial-gradient(white 0%,transparent 5%)",
+        star: "linear-gradient(90deg, #f0f0f0 0%, #f0f0f0 50%, #f0f0f0 100%)",
       },
       boxShadow: {
-        eclipse: "0px -20px 20px 0px rgba(255, 250, 233, 0.9)",
+        eclipse: "var(--shadow)",
         lightEclipse: "0px -20px 20px 0px rgba(255, 250, 233, 0.9)",
+      },
+      transformOrigin: {
+        star: "0px 200px",
       },
     },
   },

@@ -181,11 +181,21 @@ import { Button, Divider } from "@nextui-org/react";
     //underline
     "--line-width": 100,
     duration: 0.6,
+    delay: 0.2,
     scrollTrigger: {
       scroller: "main",
       trigger: "#section2",
       start: "center bottom",
     },
+  });
+
+  gsap.to("#sun", {
+    //scale: 1.5,
+    duration: 2,
+    yoyo: true,
+    repeat: -1,
+    ease: "power1.inOut",
+    "--shadow": "0px -20px 20px 0px rgba(255, 250, 233, 0.9)",
   });
 
   const rocket = document.querySelector("#rocket");
@@ -196,12 +206,6 @@ import { Button, Divider } from "@nextui-org/react";
         top: 0,
         behavior: "smooth",
       });
-
-      //Animate the rocket to scroll out of the screen
-      // gsap.to("#rocket", {
-      //   y: "-100vh",
-      //   duration: 2,
-      // });
     });
   }
 </script>
