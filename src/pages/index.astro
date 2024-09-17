@@ -3,6 +3,37 @@ import Layout from "../layouts/Layout.astro";
 import CardComponent from "../components/CardComponent";
 import { Envelope } from "../components/icons/Envelope";
 import { Button, Divider } from "@nextui-org/react";
+
+const recommendations = [
+  {
+    name: "Julien Cantin",
+    company: "CollecOnline",
+    imageFallback: "J",
+    detail: "React, ThreeJS",
+    translation: `A fast and efficient mission. Antoine carried out his mission and completed it more quickly than expected. I highly recommend Antoine for his skills and reliability.`,
+    content: `Une mission rapide et efficace. Antoine a mené à bien sa mission et la terminée plus rapidement que prévu. Je recommande fortement Antoine pour ses compétences et son sérieux.`,
+  },
+  {
+    name: "Thierry Mangin",
+    company: "AC Environnement",
+    imageFallback: "T",
+    detail: "Angular, RxJS, Kotlin",
+    translation: `I had the opportunity to collaborate with Antoine Ando for two years, while he was working as a freelance web developer for our company, AC-Environnement. From the beginning of our collaboration, Antoine was able to integrate easily into our team. His autonomy and professionalism were quickly noticed.
+
+  Antoine is a talented and rigorous developer, capable of successfully completing complex projects while respecting deadlines. His ability to understand our needs and respond to them effectively has added real value to our development process. His approach to work is both methodical and creative, allowing him to offer relevant and innovative solutions.
+
+  In addition to his undeniable technical skills, Antoine has also contributed to the good dynamics of our team through his positive attitude and spirit of collaboration.
+
+  I highly recommend Antoine for any mission or position requiring web development skills. He will undoubtedly be able to adapt and enrich any structure that calls on his services.`,
+    content: `J'ai eu l'opportunité de collaborer avec Antoine Ando durant deux années, alors qu'il travaillait en tant que développeur web freelance pour notre société, AC-Environnement. Dès le début de notre collaboration, Antoine a su s'intégrer avec aisance à notre équipe en place. Son autonomie et son professionnalisme ont rapidement été remarqués.
+    
+    Antoine est un développeur talentueux et rigoureux, capable de mener à bien des projets complexes tout en respectant les délais. Sa capacité à comprendre nos besoins et à y répondre de manière efficace a apporté une réelle plus-value à notre manière de développer. Son approche du travail est à la fois méthodique et créative, ce qui lui permet d'offrir des solutions pertinentes et innovantes.
+    
+    Outre ses compétences techniques indéniables, Antoine a également su contribuer à la bonne dynamique de notre équipe par son attitude positive et son esprit de collaboration.
+    
+    Je recommande vivement Antoine pour toute mission ou poste nécessitant des compétences en développement web. Il saura sans aucun doute s’adapter et enrichir toute structure qui ferait appel à ses services.`,
+  },
+];
 ---
 
 <Layout title="Antoine ANDO">
@@ -82,7 +113,20 @@ import { Button, Divider } from "@nextui-org/react";
       <div
         class="flex w-full gap-5 flex-nowrap md:flex-wrap justify-start md:justify-center text-xl overflow-y-auto pl-6 pr-6 pb-6 mx-[-20px] md:mx-0"
       >
-        <CardComponent
+        {
+          recommendations.map((recommendation) => (
+            <CardComponent
+              title={recommendation.name}
+              subtitle={recommendation.company}
+              imageFallback={recommendation.imageFallback}
+              detail={recommendation.detail}
+              translation={recommendation.translation}
+              content={recommendation.content}
+              client:load
+            ></CardComponent>
+          ))
+        }
+        <!-- <CardComponent
           title="Julien Cantin"
           subtitle="CollecOnline"
           imageFallback="J"
@@ -94,16 +138,37 @@ import { Button, Divider } from "@nextui-org/react";
           terminée plus rapidement que prévu. Je recommande fortement Antoine
           pour ses compétences et son sérieux.
         </CardComponent>
-        <!-- <CardComponent
-          title="Julien Cantin"
-          subtitle="CollecOnline"
-          imageFallback="J"
+        <CardComponent
+          title="Thierry Mangin"
+          subtitle="AC Environnement"
+          imageFallback="T"
+          detail="Angular, RxJS, Kotlin"
+          translation={`I had the opportunity to collaborate with Antoine Ando for two years, while he was working as a freelance web developer for our company, AC-Environnement. From the beginning of our collaboration, Antoine was able to integrate easily into our team. His autonomy and professionalism were quickly noticed.
+          
+          Antoine is a talented and rigorous developer, capable of successfully completing complex projects while respecting deadlines. His ability to understand our needs and respond to them effectively has added real value to our development process. His approach to work is both methodical and creative, allowing him to offer relevant and innovative solutions.
+          
+          In addition to his undeniable technical skills, Antoine has also contributed to the good dynamics of our team through his positive attitude and spirit of collaboration.
+          
+          I highly recommend Antoine for any mission or position requiring web development skills. He will undoubtedly be able to adapt and enrich any structure that calls on his services.`}
+          client:load
         >
-          lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate.
+          J'ai eu l'opportunité de collaborer avec Antoine Ando durant deux
+          années, alors qu'il travaillait en tant que développeur web freelance
+          pour notre société, AC-Environnement. Dès le début de notre
+          collaboration, Antoine a su s'intégrer avec aisance à notre équipe en
+          place. Son autonomie et son professionnalisme ont rapidement été
+          remarqués.<br />Antoine est un développeur talentueux et rigoureux,
+          capable de mener à bien des projets complexes tout en respectant les
+          délais. Sa capacité à comprendre nos besoins et à y répondre de
+          manière efficace a apporté une réelle plus-value à notre manière de
+          développer. Son approche du travail est à la fois méthodique et
+          créative, ce qui lui permet d'offrir des solutions pertinentes et
+          innovantes.<br />Outre ses compétences techniques indéniables, Antoine
+          a également su contribuer à la bonne dynamique de notre équipe par son
+          attitude positive et son esprit de collaboration.<br />Je recommande
+          vivement Antoine pour toute mission ou poste nécessitant des
+          compétences en développement web. Il saura sans aucun doute s’adapter
+          et enrichir toute structure qui ferait appel à ses services.
         </CardComponent> -->
       </div>
     </div>

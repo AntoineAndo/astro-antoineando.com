@@ -3,18 +3,18 @@ import {
   CardBody,
   CardFooter,
   Divider,
-  Link,
   CardHeader,
   Avatar,
 } from "@nextui-org/react";
 import { useState } from "react";
+import { ChevronDown } from "./icons/ChevronDown";
 
 interface CardProps {
   title: string;
   subtitle: string;
   imageUrl?: string;
   imageFallback?: string;
-  children: any;
+  content: any;
   classList?: string;
   detail?: any;
   translation?: any;
@@ -25,15 +25,29 @@ export default function CardComponent({
   subtitle,
   imageUrl,
   imageFallback,
-  children,
+  content,
   classList,
   detail,
   translation,
 }: CardProps) {
+  const LIMIT = 300;
+
   const [showOriginal, setShowOriginal] = useState(!translation ? true : false);
+  const [showMore, setShowMore] = useState(false);
+  const [isTooLong, setIsTooLong] = useState(translation?.length > LIMIT);
 
   const toggleTranslation = () => {
     setShowOriginal(!showOriginal);
+  };
+
+  const getCardContent = () => {
+    let text = showOriginal ? content : translation;
+
+    if (isTooLong) {
+      return text.slice(0, LIMIT) + (showMore ? text.slice(LIMIT) : "...");
+    } else {
+      return text;
+    }
   };
 
   return (
@@ -60,17 +74,28 @@ export default function CardComponent({
       </CardHeader>
       <Divider />
       <CardBody className="gap-3">
-        <p className="text-justify text-medium md:text-xl">
-          {showOriginal ? children : translation}
+        <p className="text-justify text-medium md:text-xl whitespace-pre-line">
+          {getCardContent()}
         </p>
+
+        {/* Show more */}
+        {isTooLong && (
+          <span
+            className={`text-sm text-default-500 cursor-pointer text-center stroke-text ${showMore ? "rotate-180" : ""} flex justify-center`}
+            onClick={() => setShowMore(!showMore)}
+          >
+            <ChevronDown />
+          </span>
+        )}
+
         {translation && (
           <div className="flex justify-end">
-            <Link
+            <span
               className="text-sm text-default-500 cursor-pointer"
-              onPress={toggleTranslation}
+              onClick={toggleTranslation}
             >
               {showOriginal ? "Show Translation" : "Show Original"}
-            </Link>
+            </span>
           </div>
         )}
       </CardBody>
