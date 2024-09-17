@@ -2,8 +2,7 @@
 import React from "react";
 import Layout from "../../layouts/Layout.astro";
 import { sanityClient } from "sanity:client";
-import SanityPicture, { picture } from "astro-sanity-picture";
-import imageUrlBuilder from "@sanity/image-url";
+import { picture } from "astro-sanity-picture";
 
 const projects = await sanityClient.fetch(
   `*[_type == "project" && defined(slug)] | order(publishedAt desc) {
@@ -13,7 +12,7 @@ const projects = await sanityClient.fetch(
     ${picture("mainImage")}
   }`
 );
-import CardComponent from "../../components/CardComponent";
+import ProjectCardComponent from "../../components/ProjectCardComponent";
 ---
 
 <Layout title="Projects - Antoine ANDO">
@@ -24,7 +23,7 @@ import CardComponent from "../../components/CardComponent";
       projects.map((project: any) => {
         return (
           <a href={"/projects/" + project.slug.current}>
-            <CardComponent
+            <ProjectCardComponent
               title={project.title}
               subtitle={project.shortDescription}
             >
@@ -34,19 +33,7 @@ import CardComponent from "../../components/CardComponent";
                   alt="Flowers"
                 />
               </picture>
-
-              {/* <CardNext key={project._id}>
-            <CardBody>
-              <a
-                href={`/projects/${project.slug.current}`}
-                class="flex flex-col"
-              >
-                <h2 class="text-xl font-bold">{project.title}</h2>
-                <p>{project.shortDescription}</p>
-              </a>
-            </CardBody>
-          </CardNext> */}
-            </CardComponent>
+            </ProjectCardComponent>
           </a>
         );
       })
