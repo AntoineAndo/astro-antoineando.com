@@ -214,10 +214,20 @@ const recommendations = [
 
   <!-- Rocket -->
   <div
-    class="rocket aspect-square fixed cursor-pointer -rotate-45 -top-28 right-10"
+    class="rocket aspect-square fixed cursor-pointer -top-28 right-10 text-4xl
+      before:opacity-0
+      before:absolute before:top-0 before:left-0 before:bottom-0 before:right-0
+      before:margin-auto
+      before:outline-accent2 before:outline-dashed
+      before:outline-2
+      before:rounded-full
+      before:w-full before:h-full
+      
+      hover:before:animate-ping
+      hover:before:opacity-100"
     id="rocket"
   >
-    🚀
+    <span class="block -rotate-45"> 🚀 </span>
   </div>
 </Layout>
 <script>
@@ -235,20 +245,26 @@ const recommendations = [
 <script is:inline>
   const isMobile = window.matchMedia("(max-width: 640px)").matches;
 
-  gsap.to("#rocket", {
-    y: "100vh",
-    scale: 2.5,
-    duration: 0.5,
-    ease: "back.out(1)",
-    //When the top of the viewport reaches the bottom of #section1, trigger the animation
-    scrollTrigger: {
-      // scroller: "main",
-      trigger: "#section2",
-      start: "top center",
-      toggleActions: "play play reverse reverse",
-      // fastScrollEnd: 3000,
+  gsap.fromTo(
+    "#rocket",
+    {
+      scale: 0.1,
     },
-  });
+    {
+      y: "100vh",
+      scale: 1,
+      duration: 0.5,
+      ease: "back.out(1)",
+      //When the top of the viewport reaches the bottom of #section1, trigger the animation
+      scrollTrigger: {
+        // scroller: "main",
+        trigger: "#section2",
+        start: "top center",
+        toggleActions: "play play reverse reverse",
+        // fastScrollEnd: 3000,
+      },
+    }
+  );
 
   const name = document.querySelector("#name");
 

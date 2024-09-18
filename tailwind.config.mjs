@@ -20,6 +20,7 @@ export default {
       boxShadow: {
         eclipse: "var(--shadow)",
         lightEclipse: "0px -20px 20px 0px rgba(255, 250, 233, 0.9)",
+        rocket: "0px 5px 5px 0px red",
       },
       transformOrigin: {
         star: "0px 200px",

@@ -31,7 +31,7 @@ export default function ProjectCardComponent({
   return (
     <CardNext
       className={
-        "w-11/12 md:w-full md:min-w-[400px] md:max-w-[800px] flex-shrink-0 h-fit p-3" +
+        "w-11/12 md:w-full md:min-w-[400px] md:max-w-[800px] flex-shrink-0 h-fit p-3 hover:scale-105 " +
         classList
       }
       isBlurred
@@ -51,11 +51,7 @@ export default function ProjectCardComponent({
         </div>
       </CardHeader>
       <Divider />
-      <CardBody className="gap-3">
-        <p className="text-justify text-medium md:text-xl whitespace-pre-line">
-          {children}
-        </p>
-      </CardBody>
+      <CardBody>{children}</CardBody>
       {detail && (
         <>
           <Divider />
