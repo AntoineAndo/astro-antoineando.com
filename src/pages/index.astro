@@ -40,7 +40,7 @@ const recommendations = [
   <!-- Header -->
   <div
     id="section1"
-    class="relative flex flex-col items-center justify-center min-h-[100%] gap-0 sm:gap-1 text-center"
+    class="relative flex flex-col items-center justify-center min-h-screen gap-0 sm:gap-1 text-center"
   >
     <div
       id="sun"
@@ -232,7 +232,7 @@ const recommendations = [
     ease: "back.out(1)",
     //When the top of the viewport reaches the bottom of #section1, trigger the animation
     scrollTrigger: {
-      scroller: "main",
+      // scroller: "main",
       trigger: "#section2",
       start: "top center",
       toggleActions: "play play reverse reverse",
@@ -248,7 +248,7 @@ const recommendations = [
     duration: 0.6,
     delay: 0.2,
     scrollTrigger: {
-      scroller: "main",
+      // scroller: "main",
       trigger: "#section2",
       start: "center bottom",
     },
@@ -267,7 +267,7 @@ const recommendations = [
   if (rocket) {
     rocket.addEventListener("click", () => {
       //Scroll to top
-      document.querySelector("main").scrollTo({
+      window.scrollTo({
         top: 0,
         behavior: "smooth",
       });

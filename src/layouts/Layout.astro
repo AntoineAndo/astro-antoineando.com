@@ -32,7 +32,7 @@ Astro.response.headers.set(
     <slot name="head" />
     <title>{title}</title>
   </head>
-  <body class="font-space text-text overflow-y-scroll h-full">
+  <body class="font-space text-text min-h-screen">
     <script is:inline>
       // use a script tag or an external JS file
       document.addEventListener("DOMContentLoaded", (event) => {
@@ -77,11 +77,9 @@ Astro.response.headers.set(
       })();
     </script>
 
-    <div class="relative flex flex-col h-screen">
+    <div class="relative flex flex-col">
       <Navigation />
-      <main
-        class="flex flex-col items-center overflow-x-hidden overflow-y-visible"
-      >
+      <main class="flex flex-col items-center">
         <slot />
 
         <!-- shooting stars-->
