@@ -56,7 +56,7 @@ export default function CardComponent({
         "w-full md:min-w-[400px] md:max-w-[800px] flex-shrink-0 h-fit p-3" +
         classList
       }
-      isBlurred
+      //isBlurred
     >
       <CardHeader className="flex gap-3">
         {(imageUrl || imageFallback) && (
