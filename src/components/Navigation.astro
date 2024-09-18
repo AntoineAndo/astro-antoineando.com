@@ -5,9 +5,7 @@ import ThemeButton from "./ThemeButton.astro";
 import NavContent from "./NavContent.jsx";
 ---
 
-<div
-  class="flex sticky w-full z-50 backdrop-blur-md border-[#ffefd2] border-b-2"
->
+<div class="flex fixed w-full z-50 backdrop-blur-md">
   <NavContent client:load>
     <ThemeButton />
   </NavContent>

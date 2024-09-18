@@ -10,8 +10,12 @@ const recommendations = [
     company: "CollecOnline",
     imageFallback: "J",
     detail: "React, ThreeJS",
-    translation: `A fast and efficient mission. Antoine carried out his mission and completed it more quickly than expected. I highly recommend Antoine for his skills and reliability.`,
-    content: `Une mission rapide et efficace. Antoine a mené à bien sa mission et la terminée plus rapidement que prévu. Je recommande fortement Antoine pour ses compétences et son sérieux.`,
+    translation: `A fast and efficient mission. Antoine carried out his mission and completed it more quickly than expected.
+  
+    I highly recommend Antoine for his skills and reliability.`,
+    content: `Une mission rapide et efficace. Antoine a mené à bien sa mission et la terminée plus rapidement que prévu.
+    
+    Je recommande fortement Antoine pour ses compétences et son sérieux.`,
   },
   {
     name: "Thierry Mangin",
@@ -111,21 +115,27 @@ const recommendations = [
 
       <!-- Cards container -->
       <div
-        class="flex w-full gap-5 flex-nowrap md:flex-wrap justify-start md:justify-center text-xl overflow-y-auto pl-6 pr-6 pb-6 mx-[-20px] md:mx-0"
+        class="flex justify-start md:justify-center w-screen overflow-y-auto mx-[-20px] md:mx-0"
       >
-        {
-          recommendations.map((recommendation) => (
-            <CardComponent
-              title={recommendation.name}
-              subtitle={recommendation.company}
-              imageFallback={recommendation.imageFallback}
-              detail={recommendation.detail}
-              translation={recommendation.translation}
-              content={recommendation.content}
-              client:load
-            />
-          ))
-        }
+        <div
+          class="flex gap-5 flex-nowrap md:flex-wrap justify-start md:justify-center text-xl pb-6 px-6 w-fit"
+        >
+          {
+            recommendations.map((recommendation) => (
+              <div class="w-[80VW] md:w-auto">
+                <CardComponent
+                  title={recommendation.name}
+                  subtitle={recommendation.company}
+                  imageFallback={recommendation.imageFallback}
+                  detail={recommendation.detail}
+                  translation={recommendation.translation}
+                  content={recommendation.content}
+                  client:load
+                />
+              </div>
+            ))
+          }
+        </div>
         <!-- <CardComponent
           title="Julien Cantin"
           subtitle="CollecOnline"

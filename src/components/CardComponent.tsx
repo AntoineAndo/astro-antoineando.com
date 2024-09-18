@@ -53,7 +53,7 @@ export default function CardComponent({
   return (
     <CardNext
       className={
-        "w-11/12 md:w-full md:min-w-[400px] md:max-w-[800px] flex-shrink-0 h-fit p-3" +
+        "w-full md:min-w-[400px] md:max-w-[800px] flex-shrink-0 h-fit p-3" +
         classList
       }
       isBlurred
