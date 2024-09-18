@@ -32,10 +32,8 @@ Astro.response.headers.set(
     <slot name="head" />
     <title>{title}</title>
   </head>
-  <body class="font-space text-text">
+  <body class="font-space text-text overflow-y-scroll h-full">
     <script is:inline>
-      import { transform } from "typescript";
-
       // use a script tag or an external JS file
       document.addEventListener("DOMContentLoaded", (event) => {
         gsap.registerPlugin(ScrollTrigger);
@@ -81,7 +79,9 @@ Astro.response.headers.set(
 
     <div class="relative flex flex-col h-screen">
       <Navigation />
-      <main class="flex flex-col items-center overflow-y-auto">
+      <main
+        class="flex flex-col items-center overflow-x-hidden overflow-y-visible"
+      >
         <slot />
 
         <!-- shooting stars-->
