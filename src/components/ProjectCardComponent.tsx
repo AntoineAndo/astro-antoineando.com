@@ -34,7 +34,7 @@ export default function ProjectCardComponent({
         "w-11/12 md:w-full md:min-w-[400px] md:max-w-[800px] flex-shrink-0 h-fit p-3 hover:scale-105 " +
         classList
       }
-      isBlurred
+      // isBlurred
     >
       <CardHeader className="flex gap-3">
         {(imageUrl || imageFallback) && (
