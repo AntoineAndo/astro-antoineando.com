@@ -25,6 +25,12 @@ export default {
       transformOrigin: {
         star: "0px 200px",
       },
+      content: {
+        hi: "'Hey! What are you looking for? 👀'",
+      },
+      transform: {
+        half: "translate(-50%, 0)",
+      },
     },
   },
   darkMode: "selector",

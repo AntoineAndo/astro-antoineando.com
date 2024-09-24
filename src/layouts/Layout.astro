@@ -15,7 +15,7 @@ Astro.response.headers.set(
 
 <html
   lang="en"
-  class="bg-gradient-to-br from-background to-background2 absolute w-full overflow-x-hidden"
+  class="absolute w-full overflow-x-hidden before:fixed before:top-2 before:left-1/2 before:-translate-x-1/2 before:content-hi before:-z-10"
 >
   <head>
     <meta charset="UTF-8" />
@@ -35,7 +35,9 @@ Astro.response.headers.set(
     <slot name="head" />
     <title>{title}</title>
   </head>
-  <body class="font-space text-text min-h-screen">
+  <body
+    class="font-space text-text min-h-screen bg-gradient-to-br from-background to-background2"
+  >
     <script is:inline>
       // use a script tag or an external JS file
       document.addEventListener("DOMContentLoaded", (event) => {
