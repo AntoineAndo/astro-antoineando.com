@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Symetry drawing</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+
+        font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+          sans-serif;
+      }
+
+      header {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        z-index: 999;
+
+        width: fit-content;
+        height: 50px;
+        box-sizing: border-box;
+        padding-inline: 20px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        border-radius: 15px;
+
+        transition: box-shadow ease 0.15s;
+      }
+
+      /*
+      If the header is collapsed
+      the entire header is clickable
+      */
+      header:hover:has(.toolbar.collapsed) {
+        cursor: pointer;
+      }
+
+      .toolbar {
+        display: flex;
+        gap: 20px;
+        width: 100%;
+
+        overflow: hidden;
+      }
+
+      .toolbar.collapsed {
+        display: none;
+      }
+
+      .toolbar > div {
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        white-space: nowrap;
+      }
+
+      #downloadPopover {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: none;
+      }
+
+      .mouseGuard {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -10;
+      }
+
+      .popover {
+        position: absolute;
+        width: fit-content;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: fit-content;
+
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        border: none;
+        padding: 20px;
+        background: rgba(240, 240, 240, 0.5);
+        backdrop-filter: blur(5px);
+      }
+
+      canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+      canvas#backgroundCanvas {
+        z-index: -10;
+      }
+
+      #cursorCanvas {
+        pointer-events: none;
+        z-index: 10;
+      }
+
+      .glass {
+        background: rgba(240, 240, 240, 0.5);
+        border: none;
+        backdrop-filter: blur(5px);
+      }
+
+      .glass:hover {
+        background: rgba(240, 240, 240, 0.7);
+        box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+        transition: box-shadow ease 0.15s;
+      }
+
+      .actionsContainer {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      #downloadPopoverButton {
+        height: 60px;
+        width: 60px;
+        border-radius: 100%;
+        cursor: pointer;
+      }
+
+      #clearButton {
+        height: 60px;
+        width: 60px;
+        border-radius: 100%;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="backgroundCanvas"></canvas>
+    <canvas id="canvas"></canvas>
+    <canvas id="cursorCanvas"></canvas>
+
+    <div class="ui">
+      <!-- Header -->
+      <header class="glass">
+        <div class="toolbar">
+          <div>
+            <label for="nbBrushes">Number of brushes</label>
+            <input type="number" id="nbBrushes" value="4" />
+          </div>
+          <div>
+            <label for="rainbow"> Rainbow stroke </label>
+            <input type="checkbox" id="rainbow" />
+          </div>
+          <div>
+            <label for="controlPointsToggle">View control points</label>
+            <input type="checkbox" id="controlPointsToggle" />
+          </div>
+          <div>
+            <label for="segmentsEndsToggle">View segment nodes</label>
+            <input type="checkbox" id="segmentsEndsToggle" />
+          </div>
+          <div>
+            <label for="strokeWidth">Stroke width</label>
+            <input type="range" id="strokeWidth" min="1" max="100" value="20" />
+          </div>
+
+          <div>
+            <button id="shuffle">Shuffle colors</button>
+          </div>
+        </div>
+        <div>
+          <button id="collapse"><</button>
+        </div>
+        <!-- <div>
+          Subdivisions
+          <input type="number" id="subdivisions" value="2" min="1" max="1000" />
+        </div> -->
+      </header>
+
+      <div class="actionsContainer">
+        <!-- Clear drawing button -->
+        <button id="clearButton" class="glass">Clear</button>
+
+        <!-- Download button -->
+        <button
+          id="downloadPopoverButton"
+          popovertarget="downloadPopover"
+          class="glass"
+        >
+          Download
+        </button>
+      </div>
+
+      <!-- Download popover -->
+      <div popover="manual" id="downloadPopover">
+        <div class="mouseGuard"></div>
+        <div class="popover">
+          <div>
+            <label for="transparentBackground">Transparent background</label>
+            <input type="checkbox" id="transparentBackground" />
+          </div>
+          <button id="download">Download</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      //Variables and functions declarations
+      function random(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+      }
+
+      // Degrees to radians
+      function toRad(degrees) {
+        return degrees * (Math.PI / 180);
+      }
+
+      // Radians to degrees
+      function toDeg(radians) {
+        return radians * (180 / Math.PI);
+      }
+
+      function toCenterCoordinates(x, y) {
+        let newX = x - window.innerWidth / 2;
+        let newY = -(y - window.innerHeight / 2);
+        return {
+          x: newX,
+          y: newY,
+        };
+      }
+
+      function fromCenterCoordinates(x, y) {
+        let newX = x + window.innerWidth / 2;
+        let newY = y + window.innerHeight / 2;
+        return {
+          x: newX,
+          y: newY,
+        };
+      }
+    </script>
+    <script>
+      function initBrushes() {
+        //Empty the brushes
+        brushes = [];
+
+        for (let i = 0; i < brushNb; i++) {
+          brushes.push({
+            color: {
+              h: random(0, 255),
+              s: `${random(50, 100)}%`,
+              l: `${random(50, 75)}%`,
+            },
+            segments: [],
+          });
+        }
+      }
+
+      function resize() {
+        // Create an off-screen canvas to store the current drawing
+        const offScreenCanvas = document.createElement("canvas");
+        offScreenCanvas.width = window.innerWidth;
+        offScreenCanvas.height = window.innerHeight;
+        const offScreenCtx = offScreenCanvas.getContext("2d");
+        offScreenCtx.drawImage(canvas, 0, 0);
+
+        // Resize the main canvas
+        canvas.setAttribute("width", window.innerWidth);
+        canvas.setAttribute("height", window.innerHeight);
+
+        // Resize the cursor canvas
+        cursorCanvas.setAttribute("width", window.innerWidth);
+        cursorCanvas.setAttribute("height", window.innerHeight);
+
+        // Resize the cursor canvas
+        bgCanvas.setAttribute("width", window.innerWidth);
+        bgCanvas.setAttribute("height", window.innerHeight);
+
+        // Restore the drawing from the off-screen canvas
+        ctx.drawImage(offScreenCanvas, 0, 0);
+      }
+
+      function saveSnapshot() {
+        const canvas = document.getElementById("canvas");
+        const offScreenCanvas = document.createElement("canvas");
+        offScreenCanvas.width = canvas.width;
+        offScreenCanvas.height = canvas.height;
+        const offScreenCtx = offScreenCanvas.getContext("2d");
+        offScreenCtx.drawImage(canvas, 0, 0);
+
+        // Remove all the snapshots after the current one
+        // This is to properly handle the undo/redo functionality
+        // Is a user undo some action, and draw something, then all the snapshots after the current one are invalid
+        if (snapshotIndex < snapshots.length - 1) {
+          snapshots.splice(snapshotIndex + 1, snapshots.length);
+        }
+
+        // Add the new snapshot and update the index
+        snapshots.push(offScreenCanvas);
+        snapshotIndex = snapshots.length - 1;
+      }
+
+      function download(config) {
+        // Clear the background canvas
+        bgCtx.clearRect(0, 0, canvas.width, canvas.height);
+
+        if (!config.transparentBackground) {
+          bgCtx.fillStyle = "white";
+          bgCtx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        // Create a hidden link to download the images
+        let link = document.createElement("a");
+        link.download = `Drawing_${new Date().toISOString()}.png`;
+
+        const mergedCanvas = document.createElement("canvas");
+        mergedCanvas.width = canvas.width;
+        mergedCanvas.height = canvas.height;
+        const mergedCtx = mergedCanvas.getContext("2d");
+
+        // Draw the background
+        mergedCtx.drawImage(bgCanvas, 0, 0);
+
+        // Draw the drawing
+        mergedCtx.drawImage(canvas, 0, 0);
+
+        link.href = mergedCanvas.toDataURL();
+        link.click();
+
+        //hide popover
+        const element = document.querySelector("#downloadPopover");
+        element.hidePopover();
+      }
+
+      /**
+       * Stop drawing
+       * Save the current drawing as a snapshot
+       * Clear the segments of each brush
+       */
+      function stopDrawing() {
+        isDrawing = false;
+
+        saveSnapshot();
+
+        brushes.forEach((brush) => {
+          brush.segments = [];
+        });
+      }
+
+      function updateCursor(e) {
+        cursorCtx.clearRect(0, 0, cursorCanvas.width, cursorCanvas.height);
+
+        // Create a circle that follows the cursor's position
+        cursorCtx.beginPath();
+        cursorCtx.fillStyle = "rgba(0,0,0,0.5)";
+        cursorCtx.arc(e.clientX, e.clientY, strokeWidth / 2, 0, 2 * Math.PI);
+        cursorCtx.fill();
+      }
+
+      function removeCursor() {
+        cursorCtx.clearRect(0, 0, cursorCanvas.width, cursorCanvas.height);
+      }
+
+      function onMouseAction(e) {
+        let { x, y } = toCenterCoordinates(e.clientX, e.clientY);
+
+        if (isDrawing) {
+          const subAngle = (2 * Math.PI) / brushes.length;
+
+          const angle = Math.atan2(y, x);
+          const distance = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+
+          const angles = [];
+          for (let i = 0; i < brushes.length; i++) {
+            angles.push(-angle + i * subAngle);
+          }
+
+          angles.forEach((angle, i) => {
+            let newX = distance * Math.cos(angle);
+            let newY = distance * Math.sin(angle);
+            let { x, y } = fromCenterCoordinates(newX, newY);
+            drawStroke(x, y, i);
+          });
+        }
+      }
+
+      function drawStroke(x, y, sub_index) {
+        const is_rainbow = document.querySelector("#rainbow").checked;
+        const view_control_points = document.querySelector(
+          "#controlPointsToggle"
+        ).checked;
+        const view_segments_ends = document.querySelector(
+          "#segmentsEndsToggle"
+        ).checked;
+        // const strokeWidth = document.querySelector("#strokeWidth").value;
+
+        let { h, s, l } = brushes[sub_index].color;
+        let segments = brushes[sub_index].segments;
+
+        if (is_rainbow) {
+          h += Math.floor(Math.random() * 10);
+
+          brushes[sub_index].color = {
+            h,
+            s,
+            l,
+          };
+        }
+
+        let color = `hsl(${h % 255},${s},${l})`;
+        ctx.fillStyle = color;
+        ctx.strokeStyle = color;
+        ctx.lineWidth = strokeWidth;
+
+        if (segments.length == 0) {
+          ctx.beginPath();
+          //   ctx.fillRect(x, y, 10, 10);
+          ctx.arc(x, y, strokeWidth / 2, 0, 2 * Math.PI);
+          ctx.fill();
+
+          segments.push({
+            start: {
+              x,
+              y,
+            },
+            end: {
+              x,
+              y,
+            },
+          });
+
+          return;
+        } else {
+          // Draw a circle at the start of the segment
+          // To create a smooth transition between segments
+          ctx.beginPath();
+          ctx.fillStyle = color;
+          ctx.arc(x, y, strokeWidth / 2, 0, 2 * Math.PI);
+          ctx.fill();
+
+          //   Get the previous segment
+          let previousSegment = segments[segments.length - 1];
+
+          //   Add the new segment
+          segments.push({
+            start: {
+              x: previousSegment.end.x,
+              y: previousSegment.end.y,
+            },
+            end: {
+              x,
+              y,
+            },
+          });
+
+          //If we have enough points we draw a curve
+          if (segments.length >= 2) {
+            //To get the control point
+            //We are going to follow the previous segment
+            let previousAngle = Math.atan2(
+              previousSegment.end.y - previousSegment.start.y,
+              previousSegment.end.x - previousSegment.start.x
+            );
+            let previousDistance = Math.sqrt(
+              Math.pow(previousSegment.end.x - previousSegment.start.x, 2) +
+                Math.pow(previousSegment.end.y - previousSegment.start.y, 2)
+            );
+
+            // Determine a follow factor to dampen the control point
+            // depending on the length of the previous segment
+            // If the segment is too short, we need to decrease the follow factor to prevent squiggly lines
+            const FOLLOW_FACTOR =
+              200 / previousDistance < 4 ? 4 : 200 / previousDistance;
+            let v1 = {
+              x:
+                previousSegment.end.x +
+                (previousDistance / FOLLOW_FACTOR) * Math.cos(previousAngle),
+              y:
+                previousSegment.end.y +
+                (previousDistance / FOLLOW_FACTOR) * Math.sin(previousAngle),
+            };
+
+            ctx.beginPath();
+            ctx.moveTo(previousSegment.end.x, previousSegment.end.y);
+            ctx.lineWidth = strokeWidth;
+            ctx.quadraticCurveTo(v1.x, v1.y, x, y);
+
+            ctx.stroke();
+
+            //Draw control point
+            if (view_control_points) {
+              ctx.beginPath();
+              ctx.fillStyle = "red";
+              // Get the angle between the previous
+              ctx.arc(v1.x, v1.y, 5, 0, 2 * Math.PI);
+              ctx.fill();
+            }
+
+            //Draw segments ends
+            if (view_control_points) {
+              ctx.beginPath();
+              ctx.fillStyle = "blue";
+
+              // Get the angle between the previous
+
+              ctx.arc(x, y, 5, 0, 2 * Math.PI);
+              ctx.fill();
+            }
+          } else {
+            //else just a line
+            ctx.lineTo(x, y);
+            ctx.stroke();
+          }
+        }
+      }
+    </script>
+    <script>
+      /*
+      Toggle the header between collapsed and expanded
+      */
+      function toggleHeader(e) {
+        e.stopPropagation();
+        console.log("uh");
+        // Toggle the collapsed class
+        const collapsibleContent = document.querySelector(".toolbar");
+        collapsibleContent.classList.toggle("collapsed");
+
+        // Change the content of the collapse button
+        document.querySelector("#collapse").innerHTML =
+          document.querySelector("#collapse").innerHTML == "&lt;"
+            ? "&gt;"
+            : "&lt;";
+      }
+
+      const STROKE_WIDTH_INPUT = document.querySelector("#strokeWidth");
+      let strokeWidth;
+
+      const HEADER = document.querySelector("header");
+
+      // Toolbar listeners
+      document.querySelector("#clearButton").addEventListener("click", (e) => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        snapshots.splice(1, snapshots.length - 1);
+        console.log(snapshots);
+      });
+
+      //  Header collapse button
+      document
+        .querySelector("#collapse")
+        .addEventListener("click", toggleHeader);
+
+      //  Shuffle colors button
+      document.querySelector("#shuffle").addEventListener("click", initBrushes);
+
+      //   Brush number
+      document.querySelector("#nbBrushes").addEventListener("change", (e) => {
+        brushNb = e.target.value;
+        initBrushes();
+      });
+
+      //Download
+      document.querySelector("#download").addEventListener("click", (e) => {
+        const downloadConfig = {
+          transparentBackground: document.querySelector(
+            "#transparentBackground"
+          ).checked,
+        };
+
+        download(downloadConfig);
+      });
+
+      // Mouse guard
+      document.querySelector(".mouseGuard").addEventListener("click", (e) => {
+        e.stopPropagation();
+        document.querySelector("#downloadPopover").hidePopover();
+      });
+
+      HEADER.addEventListener("click", (e) => {
+        if (document.querySelector(".toolbar.collapsed")) {
+          toggleHeader(e);
+        }
+      });
+
+      STROKE_WIDTH_INPUT.addEventListener("change", (e) => {
+        strokeWidth = e.target.value;
+        console.log(strokeWidth);
+      });
+
+      // Initialize the stroke width
+      STROKE_WIDTH_INPUT.value = 20;
+      STROKE_WIDTH_INPUT.dispatchEvent(new Event("change"));
+    </script>
+    <script>
+      // Store all the snapshots of the canvas
+      // Combined with snapshotIndex, it allows us to implement undo/redo functionality
+      const snapshots = [];
+
+      //   The index of the currently drawn snapshot
+      // It is incremented each time the user draws something
+      // If the user undoes an action, the index is decremented and the canvas is restored to the previous state
+      // If the user redoes an action, the index is incremented and the canvas is restored to the next state
+      // If the user draws something after undoing an action, all the snapshots after the current one are removed
+      let snapshotIndex = 0;
+
+      // Canvas setup
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
+      // canvas.style.cursor = "none";
+
+      //  Cursor canvas
+      const cursorCanvas = document.getElementById("cursorCanvas");
+      const cursorCtx = cursorCanvas.getContext("2d");
+
+      // Background canvas setup
+      const bgCanvas = document.getElementById("backgroundCanvas");
+      const bgCtx = backgroundCanvas.getContext("2d");
+      //   Save the initial blank snapshot
+      saveSnapshot();
+
+      let brushes = [];
+      let brushNb = document.querySelector("#nbBrushes").value;
+
+      //   Initialize the brushes
+      initBrushes();
+
+      //   Resize the canvas to the window size
+      resize();
+
+      //   Get the canvas position to know its offset from the top
+      // let canvasPosition = canvas.getBoundingClientRect();
+
+      window.addEventListener("resize", resize);
+
+      //   Place Center
+      // ctx.fillStyle = "black";
+      // const center = fromCenterCoordinates(0, 0);
+      // ctx.beginPath();
+      // ctx.arc(center.x, center.y, 1, 0, 2 * Math.PI);
+      // ctx.fill();
+
+      //Drawing listeners
+      let isDrawing = false;
+      canvas.addEventListener("mousedown", (e) => {
+        isDrawing = true;
+        onMouseAction(e);
+      });
+
+      canvas.addEventListener("mouseup", (e) => {
+        stopDrawing();
+      });
+
+      canvas.addEventListener("mousemove", (e) => {
+        updateCursor(e);
+        onMouseAction(e);
+      });
+
+      //   If the user leaves the canvas, we stop drawing
+      canvas.addEventListener("mouseleave", (e) => {
+        stopDrawing();
+        removeCursor();
+      });
+
+      //   Handle CTRL + Z and CTRL + Y for undo and redo
+      document.addEventListener("keydown", (e) => {
+        if (e.ctrlKey && e.key === "z") {
+          if (snapshots.length > 0) {
+            snapshotIndex = Math.max(0, snapshotIndex - 1);
+            const previousSnapshot = snapshots[snapshotIndex];
+
+            // Clear the canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(previousSnapshot, 0, 0);
+          }
+        } else if (e.ctrlKey && e.key === "y") {
+          if (snapshotIndex < snapshots.length - 1) {
+            snapshotIndex = Math.min(snapshots.length - 1, snapshotIndex + 1);
+            const nextSnapshot = snapshots[snapshotIndex];
+
+            // Clear the canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(nextSnapshot, 0, 0);
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
