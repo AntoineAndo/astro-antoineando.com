@@ -28,10 +28,12 @@ Astro.response.headers.set(
       http-equiv="Content-Security-Policy"
       content="
         default-src 'self';
-        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.sanity.io ;
         script-src 'self' https://cdn.sanity.io https://cdn.jsdelivr.net 'unsafe-inline' https://cdn.vercel-insights.com;
-        frame-src 'self' https://cdn.sanity.io;
         img-src 'self' https://cdn.sanity.io;
+        frame-ancestors 'self' https://antoineando.com http://localhost;
+        frame-src 'self' https://antoineando.com http://localhost https://cdn.sanity.io;
+        child-src 'self' https://cdn.sanity.io 'unsafe-inline';
       "
     />
     <script
@@ -92,9 +94,9 @@ Astro.response.headers.set(
       })();
     </script>
 
-    <div class="relative flex flex-col">
+    <div class="relative flex flex-col min-h-screen">
       <Navigation />
-      <main class="flex flex-col items-center">
+      <main class="flex flex-col items-center flex-1">
         <slot />
 
         <!-- shooting stars-->

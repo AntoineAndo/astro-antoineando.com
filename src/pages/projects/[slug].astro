@@ -53,14 +53,13 @@ let d = toHTML(content, {
   <div class="w-full">
     {
       layout === "iframe" ? (
-        <div />
+        <iframe
+          src={iframeFileUrl}
+          class="w-full h-full"
+          frameborder="0"
+          allowfullscreen
+        />
       ) : (
-        // <iframe
-        //   src={"iframeFileUrl"}
-        //   class="w-full h-full"
-        //   frameborder="0"
-        //   allowfullscreen
-        // />
         <img src={`${image}?h=500`} alt="Main image" class="" />
       )
     }
