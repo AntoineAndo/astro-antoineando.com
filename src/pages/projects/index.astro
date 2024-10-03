@@ -8,8 +8,8 @@ const projects = await sanityClient.fetch(
   `*[_type == "project" && defined(slug)] | order(publishedAt desc) {
     title,
     slug,
-    shortDescription,
-    ${picture("mainImage")}
+    description,
+    ${picture("image")}
   }`
 );
 import ProjectCardComponent from "../../components/ProjectCardComponent";
@@ -25,13 +25,10 @@ import ProjectCardComponent from "../../components/ProjectCardComponent";
           <a href={"/projects/" + project.slug.current}>
             <ProjectCardComponent
               title={project.title}
-              subtitle={project.shortDescription}
+              subtitle={project.description}
             >
               <picture class="self-center mb-5">
-                <img
-                  src={project.mainImage.asset.url + "?h=200"}
-                  alt="Flowers"
-                />
+                <img src={project.image.asset.url + "?h=200"} alt="Flowers" />
               </picture>
             </ProjectCardComponent>
           </a>

@@ -13,8 +13,11 @@ export const getStaticPaths = (async () => {
         title,
         slug,
         shortDescription,
-        ${picture("mainImage")},
-        description
+        ${picture("image")},
+        content,
+        layout,
+        "iframeFileUrl":iframe.asset->url, 
+        iframeUrl
     }`
   );
 
@@ -23,16 +26,18 @@ export const getStaticPaths = (async () => {
       params: { title: project.title, slug: project.slug.current },
       props: {
         title: project.title,
-        mainImage: project.mainImage.asset.url,
-        description: project.description,
+        image: project.image.asset.url,
+        content: project.content,
+        layout: project.layout,
+        iframeFileUrl: project.iframeFileUrl,
+        iframeUrl: project.iframeUrl,
       },
     };
   });
 }) satisfies GetStaticPaths;
 
-const { title, mainImage, description } = Astro.props;
-
-let d = toHTML(description, {
+const { title, image, content, layout, iframeFileUrl, iframeUrl } = Astro.props;
+let d = toHTML(content, {
   components: {
     block: {
       h2: ({ children }) => {
@@ -45,8 +50,20 @@ let d = toHTML(description, {
 
 <Layout title={title + " - Antoine Ando"}>
   <h1 class="text-4xl mb-5">{title}</h1>
-  <div class="w-1/2">
-    <img src={`${mainImage}?h=500`} alt="Main image" class="" />
+  <div class="w-full">
+    {
+      layout === "iframe" ? (
+        <div />
+      ) : (
+        // <iframe
+        //   src={"iframeFileUrl"}
+        //   class="w-full h-full"
+        //   frameborder="0"
+        //   allowfullscreen
+        // />
+        <img src={`${image}?h=500`} alt="Main image" class="" />
+      )
+    }
     <Fragment set:html={d} />
   </div>
 </Layout>
