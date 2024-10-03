@@ -24,11 +24,16 @@ Astro.response.headers.set(
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
 
-    <!-- <meta
+    <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; style-src 'self' 'unsafe-inline';script-src 'self' https://cdn.jsdelivr.net; img-src 'self'"
-    /> -->
-
+      content="
+        default-src 'self';
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+        script-src 'self' https://cdn.sanity.io https://cdn.jsdelivr.net 'unsafe-inline' https://cdn.vercel-insights.com;
+        frame-src 'self' https://cdn.sanity.io;
+        img-src 'self' https://cdn.sanity.io;
+      "
+    />
     <script
       is:inline
       src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
@@ -95,7 +100,7 @@ Astro.response.headers.set(
         <!-- shooting stars-->
         <div
           id="star"
-          class="fixed opacity-0 top-0 right-0 shooting-star h-[2px] md:h-1 w-1 bg-gradient-to-l from-white to-transparent rounded-full -z-10"
+          class="fixed opacity-0 top-0 right-0 shooting-star h-[2px] md:h-1 w-1 bg-gradient-to-l from-white to-transparent rounded-full"
         >
         </div>
       </main>
