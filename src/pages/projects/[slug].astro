@@ -7,9 +7,10 @@ import { sanityClient } from "sanity:client";
 import { picture } from "astro-sanity-picture";
 import { toHTML } from "@portabletext/to-html";
 
+import DynamicIframe from "../../components/DynamicIframe";
+
 export const getStaticPaths = (async () => {
-  const projects = await sanityClient.fetch(
-    `*[_type == "project" && defined(slug)] | order(publishedAt desc) {
+  const query = `*[_type == "project" && defined(slug)] | order(publishedAt desc) {
         title,
         slug,
         shortDescription,
@@ -18,8 +19,24 @@ export const getStaticPaths = (async () => {
         layout,
         "iframeFileUrl":iframe.asset->url, 
         iframeUrl
-    }`
-  );
+    }`;
+
+  // sanityClient
+  //   .request({
+  //     url: "/data/query/production",
+  //     method: "GET",
+
+  //     headers: {},
+  //     query: { query },
+  //   })
+  //   .then((data) => {
+  //     console.log(data);
+  //   })
+  //   .catch((error) => {
+  //     console.error("Fetch error:", error);
+  //   });
+
+  const projects = await sanityClient.fetch(query);
 
   return projects.map((project: any) => {
     return {
@@ -37,6 +54,7 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 const { title, image, content, layout, iframeFileUrl, iframeUrl } = Astro.props;
+
 let d = toHTML(content, {
   components: {
     block: {
@@ -50,15 +68,10 @@ let d = toHTML(content, {
 
 <Layout title={title + " - Antoine Ando"}>
   <h1 class="text-4xl mb-5">{title}</h1>
-  <div class="w-full">
+  <div class="w-[90%]">
     {
       layout === "iframe" ? (
-        <iframe
-          src={iframeFileUrl}
-          class="w-full h-full"
-          frameborder="0"
-          allowfullscreen
-        />
+        <DynamicIframe client:load url={iframeFileUrl} />
       ) : (
         <img src={`${image}?h=500`} alt="Main image" class="" />
       )
