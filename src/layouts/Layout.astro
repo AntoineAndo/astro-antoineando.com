@@ -25,6 +25,10 @@ Astro.response.headers.set(
     <meta name="generator" content={Astro.generator} />
 
     <meta
+      http-equiv="Content-Security-Policy-Report-Only"
+      content="default-src 'self';"
+    />
+    <meta
       http-equiv="Content-Security-Policy"
       content="
         default-src 'self' https://ka-f.fontawesome.com https://cdn.sanity.io;
