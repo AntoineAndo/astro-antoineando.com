@@ -62,13 +62,24 @@ let d = toHTML(content, {
         return `<h2 class="text-2xl mt-5">${children}</h2>`;
       },
     },
+    list: {
+      // Ex. 1: customizing common list types
+      bullet: ({ children }) =>
+        `<ul class="mt-xl list-disc pl-3">${children}</ul>`,
+      number: ({ children }) => `<ol class="mt-lg">${children}</ol>`,
+    },
+    listItem: {
+      // Ex. 1: customizing common list types
+      bullet: ({ children }) => `<li>${children}</li>`,
+      checkmarks: ({ children }) => `<li>✅ ${children}</li>`,
+    },
   },
 });
 ---
 
 <Layout title={title + " - Antoine Ando"}>
   <h1 class="text-4xl mb-5">{title}</h1>
-  <div class="w-[90%]">
+  <div class="w-[90%] pb-40">
     {
       layout === "iframe" ? (
         <DynamicIframe client:load url={iframeFileUrl} />
