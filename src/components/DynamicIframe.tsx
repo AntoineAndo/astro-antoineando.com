@@ -6,10 +6,10 @@ type Props = {
 
 function DynamicIframe({ url }: Props) {
   const [iframeSrcdoc, setIframeSrcdoc] = React.useState("");
+  const [isLoading, setIsLoading] = React.useState(true);
 
   useEffect(() => {
     //fetch with custom http headers
-    console.log("fetching", url);
     const cspHeader = [
       "default-src *;",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.sanity.io ;",
@@ -28,21 +28,29 @@ function DynamicIframe({ url }: Props) {
     })
       .then((res) => {
         res.text().then((html) => {
-          console.log(html);
           setIframeSrcdoc(html);
         });
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, []);
 
   return (
-    <iframe
-      srcDoc={iframeSrcdoc}
-      className="w-full h-[500px] bg-transparent border-solid border-text border-1 rounded-xl"
-      allowTransparency={true}
-    />
+    <div className="h-[500px] w-full flex items-center justify-center border-solid border-text border-1 rounded-xl">
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : (
+        <iframe
+          srcDoc={iframeSrcdoc}
+          className="w-full h-full bg-transparent "
+          allowTransparency={true}
+        />
+      )}
+    </div>
   );
 }
 
