@@ -18,7 +18,7 @@ import ProjectCardComponent from "../../components/ProjectCardComponent";
 <Layout title="Projects - Antoine ANDO">
   <h1 class="font-bold text-4xl mb-5">Projects</h1>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+  <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 p-4">
     {
       projects.map((project: any) => {
         return (
@@ -27,8 +27,12 @@ import ProjectCardComponent from "../../components/ProjectCardComponent";
               title={project.title}
               subtitle={project.description}
             >
-              <picture class="self-center mb-5">
-                <img src={project.image.asset.url + "?h=200"} alt="Flowers" />
+              <picture class="self-center">
+                <img
+                  src={project.image.asset.url + "?h=200"}
+                  alt="Flowers"
+                  class="h-[200px]"
+                />
               </picture>
             </ProjectCardComponent>
           </a>

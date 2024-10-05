@@ -31,7 +31,7 @@ export default function ProjectCardComponent({
   return (
     <CardNext
       className={
-        "w-11/12 md:w-full md:min-w-[400px] md:max-w-[800px] flex-shrink-0 h-fit p-3 hover:scale-105 " +
+        "w-full md:w-full md:min-w-[400px] md:max-w-[800px] flex-shrink-0 h-fit p-3 hover:scale-[1.02] " +
         classList
       }
       // isBlurred
