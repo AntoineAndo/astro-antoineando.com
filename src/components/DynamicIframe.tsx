@@ -40,14 +40,8 @@ function DynamicIframe({ url }: Props) {
   return (
     <iframe
       srcDoc={iframeSrcdoc}
-      className="w-full h-[500px]"
+      className="w-full h-[500px] bg-transparent border-solid border-text border-1 rounded-xl"
       allowTransparency={true}
-      style={{
-        background: "transparent",
-        border: "solid 1px white",
-        borderRadius: 10,
-      }}
-      // allowfullscreen
     />
   );
 }
