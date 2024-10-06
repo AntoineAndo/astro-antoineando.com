@@ -74,5 +74,15 @@ export default defineType({
       type: 'url',
       hidden: ({parent}) => parent?.layout !== 'iframe',
     },
+    {
+      name: 'githubUrl',
+      title: 'Github URL',
+      type: 'url',
+    },
+    {
+      name: 'liveUrl',
+      title: 'Live URL',
+      type: 'url',
+    },
   ],
 })
