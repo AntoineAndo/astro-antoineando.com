@@ -18,23 +18,9 @@ export const getStaticPaths = (async () => {
         content,
         layout,
         "iframeFileUrl":iframe.asset->url, 
-        iframeUrl
+        iframeUrl,
+        githubUrl,
     }`;
-
-  // sanityClient
-  //   .request({
-  //     url: "/data/query/production",
-  //     method: "GET",
-
-  //     headers: {},
-  //     query: { query },
-  //   })
-  //   .then((data) => {
-  //     console.log(data);
-  //   })
-  //   .catch((error) => {
-  //     console.error("Fetch error:", error);
-  //   });
 
   const projects = await sanityClient.fetch(query);
 
@@ -48,12 +34,14 @@ export const getStaticPaths = (async () => {
         layout: project.layout,
         iframeFileUrl: project.iframeFileUrl,
         iframeUrl: project.iframeUrl,
+        githubUrl: project.githubUrl,
       },
     };
   });
 }) satisfies GetStaticPaths;
 
-const { title, image, content, layout, iframeFileUrl, iframeUrl } = Astro.props;
+const { title, image, content, layout, iframeFileUrl, iframeUrl, githubUrl } =
+  Astro.props;
 
 let d = toHTML(content, {
   components: {
@@ -79,7 +67,8 @@ let d = toHTML(content, {
 
 <Layout title={title + " - Antoine Ando"}>
   <h1 class="text-4xl mb-5">{title}</h1>
-  <div class="w-[90%] pb-40">
+
+  <div class="w-[90%] pb-40 gap-5">
     {
       layout === "iframe" ? (
         <DynamicIframe client:load url={iframeFileUrl} />
@@ -87,6 +76,22 @@ let d = toHTML(content, {
         <img src={`${image}?h=500`} alt="Main image" class="" />
       )
     }
-    <Fragment set:html={d} />
+    <div>
+      <Fragment set:html={d} />
+    </div>
+
+    {
+      githubUrl && (
+        <a
+          href={githubUrl}
+          class="flex text-blue-500 hover:underline mt-5 items-center gap-3"
+          target="_blank"
+        >
+          <i class="fa fa-github" aria-hidden="true" />
+          View on GitHub
+          <i class="fa fa-external-link" aria-hidden="true" />
+        </a>
+      )
+    }
   </div>
 </Layout>

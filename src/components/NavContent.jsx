@@ -47,7 +47,7 @@ export default function Nav(props) {
         </NavbarBrand>
 
         {menuItems.map((item) => (
-          <NavbarItem className="text-xl hidden sm:flex">
+          <NavbarItem className="text-xl hidden sm:flex" key={item.name}>
             <a
               title={item.name}
               href={`${item.route}`}
@@ -72,14 +72,14 @@ export default function Nav(props) {
 
       <NavbarMenu>
         {menuItems.map((item, index) => (
-          <>
+          <React.Fragment key={item.name}>
             <NavbarMenuItem className="py-5">
               <a title={item.name} href={`${item.route}`} data-astro-prefetch>
                 {item.name}
               </a>
             </NavbarMenuItem>
             {index < menuItems.length - 1 && <Divider />}
-          </>
+          </React.Fragment>
         ))}
       </NavbarMenu>
     </Navbar>

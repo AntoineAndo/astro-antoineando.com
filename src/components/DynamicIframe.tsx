@@ -47,7 +47,8 @@ function DynamicIframe({ url }: Props) {
         <iframe
           srcDoc={iframeSrcdoc}
           className="w-full h-full bg-transparent "
-          allowTransparency={true}
+          //@ts-ignore
+          allowtransparency="true"
         />
       )}
     </div>
