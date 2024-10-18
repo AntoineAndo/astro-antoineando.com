@@ -103,6 +103,18 @@ Astro.response.headers.set(
       })();
     </script>
 
+    <script is:inline>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("/js/serviceworker.js");
+          // .then((reg) => console.log("Service Worker registered", reg))
+          // .catch((err) =>
+          //   console.error("Service Worker registration failed:", err)
+          // );
+        });
+      }
+    </script>
+
     <div class="relative flex flex-col min-h-screen">
       <Navigation />
       <main class="flex flex-col items-center flex-1">
