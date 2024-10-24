@@ -40,7 +40,7 @@ function DynamicIframe({ url }: Props) {
   }, []);
 
   return (
-    <div className="h-[500px] w-full flex items-center justify-center border-solid border-text border-1 rounded-xl">
+    <div className="h-[500px] w-full flex items-center justify-center border-solid border-text border-1 rounded-xl overflow-hidden">
       {isLoading ? (
         <div>Loading...</div>
       ) : (
