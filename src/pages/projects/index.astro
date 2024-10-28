@@ -5,7 +5,7 @@ import { sanityClient } from "sanity:client";
 import { picture } from "astro-sanity-picture";
 
 const projects = await sanityClient.fetch(
-  `*[_type == "project" && defined(slug)] | order(publishedAt desc) {
+  `*[_type == "project" && defined(slug) && active==true] | order(publishedAt desc) {
     title,
     slug,
     description,

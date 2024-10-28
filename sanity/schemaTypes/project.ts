@@ -84,5 +84,11 @@ export default defineType({
       title: 'Live URL',
       type: 'url',
     },
+    {
+      name: 'active',
+      title: 'Active',
+      type: 'boolean',
+      initialValue: true,
+    },
   ],
 })
