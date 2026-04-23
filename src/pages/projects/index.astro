@@ -28,13 +28,15 @@ import ProjectCardComponent from "../../components/ProjectCardComponent";
               title={project.title}
               subtitle={project.description}
             >
-              <picture class="self-center">
-                <img
-                  src={project.image.asset.url + "?h=200"}
-                  alt="Flowers"
-                  class="h-[200px] object-cover"
-                />
-              </picture>
+              {project.image?.asset && (
+                <picture class="self-center">
+                  <img
+                    src={project.image.asset.url + "?h=200"}
+                    alt="Flowers"
+                    class="h-[200px] object-cover"
+                  />
+                </picture>
+              )}
             </ProjectCardComponent>
           </a>
         );
