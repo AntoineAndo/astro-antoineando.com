@@ -29,7 +29,7 @@ export const getStaticPaths = (async () => {
       params: { title: project.title, slug: project.slug.current },
       props: {
         title: project.title,
-        image: project.image.asset.url,
+        image: project.image?.asset?.url ?? null,
         content: project.content,
         layout: project.layout,
         iframeFileUrl: project.iframeFileUrl,
@@ -72,9 +72,9 @@ let d = toHTML(content, {
     {
       layout === "iframe" ? (
         <DynamicIframe client:load url={iframeFileUrl} />
-      ) : (
+      ) : image ? (
         <img src={`${image}?h=500`} alt="Main image" class="" />
-      )
+      ) : null
     }
     <div>
       <Fragment set:html={d} />
