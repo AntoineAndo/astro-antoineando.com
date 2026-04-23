@@ -1,8 +1,7 @@
 import { defineConfig } from "astro/config";
 import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
-import vercelStatic from "@astrojs/vercel/static";
-import vercel from "@astrojs/vercel/serverless";
+import vercel from "@astrojs/vercel";
 
 import sanity from "@sanity/astro";
 
@@ -24,5 +23,6 @@ export default defineConfig({
     webAnalytics: {
       enabled: true,
     },
+    nodeVersion: "22",
   }),
 });
